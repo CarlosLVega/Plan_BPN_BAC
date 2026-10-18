@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan BPM · Ponqué de vainilla</title>
+  <meta name="description" content="Simulación de implementación de Buenas Prácticas de Manufactura (Res. 2674 de 2013) para la línea de ponqué de vainilla de ADEX Sweets & Pink, Cúcuta.">
+  <link rel="icon" href="logo.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Great+Vibes&family=Josefin+Sans:wght@300;400;600&family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <script>
+    (function () {
+      var t; try { t = localStorage.getItem('adex-tema'); } catch (e) {}
+      if (!t) t = 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+</head>
+<body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ===================== Navegación ===================== -->
+<header class="nav" id="nav">
+  <a class="brand" href="#inicio" aria-label="Volver al inicio">
+    <img class="brand-logo" src="logo.webp" alt="" width="40" height="40">
+    <span class="brand-name">ADEX <span>sweet and pink</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Secciones">
+    <a href="#empresa">Empresa</a>
+    <a href="#plano">Plano</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#recepcion">Recepción</a>
+    <a href="#personal">Personal</a>
+    <a href="#saneamiento">Saneamiento</a>
+    <a href="#micro">Microbiología</a>
+    <a href="#salida">Salida</a>
+    <a href="#cierre">Cierre</a>
+    <a href="#anexos">Anexos</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="btnSound" aria-label="Silenciar sonidos" title="Sonido (M)">
+      <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" class="stroke"/></svg>
+      <svg viewBox="0 0 24 24" class="ic-off"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5" class="stroke"/></svg>
+    </button>
+    <button class="icon-btn" id="btnTheme" aria-label="Cambiar tema claro u oscuro" title="Tema (D)">
+      <svg viewBox="0 0 24 24" class="ic-moon"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.4 6.4 0 0 0 10.2 10.2z"/></svg>
+      <svg viewBox="0 0 24 24" class="ic-sun"><circle cx="12" cy="12" r="4.2"/><path class="stroke" d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== Portada ===================== -->
+<section id="inicio" class="hero">
+  <div class="blobs" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+  <canvas id="microbes" aria-hidden="true"></canvas>
+  <div class="hero-grid wrap">
+    <div class="hero-copy">
+      <p class="eyebrow rv">Simulación de implementación de BPM · Resolución 2674 de 2013 · Control e Inocuidad Alimentaria</p>
+      <h1 class="hero-title rv" style="--d:80ms">Plan BPM del <em>ponqué de vainilla</em></h1>
+      <p class="hero-lead rv" style="--d:160ms">Plan básico de Buenas Prácticas de Manufactura para la línea de ponqué de vainilla de ADEX Sweets &amp; Pink: la empresa, la planta, el proceso y cada programa que exige la Resolución 2674 de 2013.</p>
+      <div class="hero-cta rv" style="--d:240ms">
+        <button class="btn primary" id="heroStart">
+          <svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="13.5" r="7.5" class="stroke"/><path class="stroke" d="M12 13.5V9.5M9.5 2.5h5"/></svg>
+          Iniciar exposición
+        </button>
+        <a class="btn ghost" href="#empresa">Recorrer el plan <span aria-hidden="true">↓</span></a>
+      </div>
+      <dl class="hero-meta rv" style="--d:320ms">
+        <div><dt>Microempresa</dt><dd>ADEX Sweets &amp; Pink, Cúcuta</dd></div>
+        <div><dt>Programa</dt><dd>Bacteriología y Laboratorio Clínico, UDES</dd></div>
+        <div><dt>Entrega</dt><dd>Semana 12</dd></div>
+      </dl>
+    </div>
+
+    <div class="hero-art rv" style="--d:200ms" aria-hidden="true">
+      <svg viewBox="0 0 400 400" class="cake-svg">
+        <defs>
+          <linearGradient id="crust" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#D9A04F"/>
+            <stop offset=".55" stop-color="#C4843A"/>
+            <stop offset="1" stop-color="#A86A2A"/>
+          </linearGradient>
+          <linearGradient id="crumb" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#FBEBC2"/>
+            <stop offset="1" stop-color="#F1D89A"/>
+          </linearGradient>
+          <radialGradient id="dishGlow" cx=".5" cy=".45" r=".6">
+            <stop offset="0" class="dg-0"/>
+            <stop offset="1" class="dg-1"/>
+          </radialGradient>
+        </defs>
+
+        <circle cx="200" cy="200" r="188" class="dish-fill"/>
+        <circle cx="200" cy="200" r="188" class="dish-rim"/>
+        <g class="dial">
+          <circle cx="200" cy="200" r="172" class="dish-dash"/>
+        </g>
+        <g class="dial-ticks" id="dialTicks"></g>
+
+        <clipPath id="logoClip"><circle cx="200" cy="200" r="160"/></clipPath>
+        <g class="cake-float">
+          <circle cx="200" cy="206" r="160" class="logo-shadow"/>
+          <image href="logo.webp" x="40" y="40" width="320" height="320" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
+          <circle cx="200" cy="200" r="160" class="logo-rim"/>
+        </g>
+
+        <g class="sparkles">
+          <path class="spk s1" d="M84 92 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z"/>
+          <path class="spk s2" d="M318 104 l2.2 6.5 6.5 2.2 -6.5 2.2 -2.2 6.5 -2.2 -6.5 -6.5 -2.2 6.5 -2.2z"/>
+          <path class="spk s3" d="M332 300 l2.6 7.8 7.8 2.6 -7.8 2.6 -2.6 7.8 -2.6 -7.8 -7.8 -2.6 7.8 -2.6z"/>
+          <path class="spk s4" d="M60 252 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats" id="stats"></div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true" data-words="Inocuidad|Buenas Prácticas de Manufactura|Res. 2674 de 2013|Ponqué de vainilla|Bacteriología|Control de calidad|ADEX Sweets & Pink"></div>
+
+<!-- ===================== 01 · Empresa ===================== -->
+<section id="empresa" class="sec">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">01</span><span class="chip">Min 0–2</span><span class="chip norm">Res. 2674 de 2013</span></div>
+      <h2 class="sec-title">La empresa</h2>
+      <p class="sec-sub">Todo el plan se basa en la Resolución 2674 de 2013. Cada componente cita el artículo que lo exige.</p>
+    </header>
+
+    <div class="grid-2 emp">
+      <div class="stack">
+        <article class="card rv">
+          <p class="kicker">Quiénes somos</p>
+          <p class="big-text">ADEX Sweets &amp; Pink es una microempresa de pastelería artesanal en Cúcuta. Esta línea elabora ponqué de vainilla por pedido, para venta en punto propio, domicilios y tiendas del barrio, en una planta de unos <b>80 m²</b> con <b>cinco personas</b>.</p>
+        </article>
+        <article class="card rv" style="--d:80ms">
+          <p class="kicker">Misión</p>
+          <p class="big-text">Elaborar ponqués de vainilla artesanales, seguros y de calidad constante, aplicando Buenas Prácticas de Manufactura desde la compra de materias primas hasta la entrega al cliente.</p>
+        </article>
+        <div class="drawer rv" style="--d:160ms">
+          <button class="drawer-btn" aria-expanded="false"><span>Visión y ficha técnica del producto</span><span class="drawer-ic" aria-hidden="true"></span></button>
+          <div class="drawer-body"><div class="drawer-inner">
+            <p class="kicker">Visión</p>
+            <p>Para 2030, ser la pastelería de referencia en Cúcuta por la inocuidad y el sabor de su ponqué, con concepto sanitario favorable sostenido y registro sanitario para distribuir en tiendas de la región.</p>
+            <p class="kicker mt">Ficha técnica</p>
+            <div class="tbl-wrap"><table class="tbl kv" id="tblFicha"></table></div>
+          </div></div>
+        </div>
+      </div>
+
+      <article class="card org-card rv" style="--d:120ms">
+        <div class="card-head">
+          <p class="kicker">Organigrama</p>
+          <span class="muted small">Toca un cargo</span>
+        </div>
+        <div class="org" id="org"></div>
+        <div class="org-panel" id="orgPanel" aria-live="polite"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 · Plano ===================== -->
+<section id="plano" class="sec alt">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">02</span><span class="chip">Min 2–5</span><span class="chip norm">Arts. 6 y 7</span></div>
+      <h2 class="sec-title">Planta y flujo del producto</h2>
+      <p class="sec-sub">Flujo en un solo sentido, de la zona sucia a la limpia.</p>
+    </header>
+
+    <div class="plan-tools rv">
+      <button class="btn primary sm" id="btnRoute">
+        <svg viewBox="0 0 24 24" class="ic ic-play"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+        <svg viewBox="0 0 24 24" class="ic ic-stop"><rect x="6.5" y="6.5" width="11" height="11" rx="2"/></svg>
+        <span>Reproducir recorrido del producto</span>
+      </button>
+      <button class="toggle" id="tgPests" aria-pressed="false"><span class="tg-dot"></span>Estaciones de plagas</button>
+      <button class="toggle on" id="tgFlows" aria-pressed="true"><span class="tg-dot"></span>Flujos</button>
+      <ul class="legend" aria-label="Convenciones">
+        <li><i class="lg prod"></i>Producto</li>
+        <li><i class="lg pers"></i>Personal</li>
+        <li><i class="lg resi"></i>Residuos</li>
+      </ul>
+    </div>
+
+    <div class="plan-layout">
+      <div class="plan-wrap card rv">
+        <svg id="plan" viewBox="0 0 960 620" role="group" aria-label="Plano de la planta"></svg>
+      </div>
+      <aside class="plan-panel card rv" id="planPanel" aria-live="polite" style="--d:100ms"></aside>
+    </div>
+
+    <div class="drawer rv">
+      <button class="drawer-btn" aria-expanded="false"><span>Equipos de producción</span><span class="drawer-ic" aria-hidden="true"></span></button>
+      <div class="drawer-body"><div class="drawer-inner"><p id="prodIntro"></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 · Proceso ===================== -->
+<section id="proceso" class="sec">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">03</span><span class="chip">Min 5–7</span><span class="chip norm">Peligros B · Q · F</span></div>
+      <h2 class="sec-title">Cómo se fabrica el ponqué de vainilla</h2>
+      <p class="sec-sub">Once etapas. Los <b class="t-warn">puntos de control (PC)</b> llevan borde ámbar; la clave está en el horneo y el enfriamiento.</p>
+    </header>
+    <div class="proc rv">
+      <ol class="proc-list" id="procList"></ol>
+      <article class="proc-card card" id="procCard" aria-live="polite"></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 · Recepción ===================== -->
+<section id="recepcion" class="sec alt">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">04</span><span class="chip">Min 7–9</span><span class="chip norm">Arts. 16 y 28</span></div>
+      <h2 class="sec-title">Recepción de materias primas</h2>
+      <p class="sec-sub">Proveedores aprobados, inspección de cada entrega y registro F01.</p>
+    </header>
+
+    <div class="game rv">
+      <div class="game-stage" id="inspStage"></div>
+      <aside class="game-side card">
+        <p class="kicker">Puntaje del inspector</p>
+        <p class="score"><span id="inspScore">0</span><span class="of">/<span id="inspAns">0</span></span></p>
+        <p class="muted small">aciertos / respondidas</p>
+        <div class="dots" id="inspDots"></div>
+        <button class="btn ghost sm" id="inspReset">
+          <svg viewBox="0 0 24 24" class="ic"><path class="stroke" d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/></svg>
+          Reiniciar
+        </button>
+      </aside>
+    </div>
+
+    <div class="drawer rv">
+      <button class="drawer-btn" aria-expanded="false"><span>Criterios de recepción y reglas de almacenamiento</span><span class="drawer-ic" aria-hidden="true"></span></button>
+      <div class="drawer-body"><div class="drawer-inner">
+        <div class="tbl-wrap"><table class="tbl" id="tblCriterios"></table></div>
+        <p class="kicker mt">Reglas de almacenamiento</p>
+        <ul class="ticks" id="listReglas"></ul>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 · Personal ===================== -->
+<section id="personal" class="sec">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">05</span><span class="chip">Min 9–12</span><span class="chip norm">Arts. 11 a 14</span></div>
+      <h2 class="sec-title">Personal manipulador</h2>
+      <p class="sec-sub"><b>Art. 11</b> certificado médico anual y revisión diaria · <b>Arts. 12 y 13</b> capacitación de mínimo 10 h al año · <b>Art. 14</b> prácticas higiénicas.</p>
+    </header>
+
+    <div class="pers-grid">
+      <article class="card man-card rv">
+        <div class="card-head">
+          <p class="kicker">Dotación del manipulador</p>
+          <span class="chip" id="manCount">0 de 7 revisados</span>
+        </div>
+        <p class="muted small">Toca cada punto de la figura.</p>
+        <div class="man-layout">
+          <svg id="manFig" viewBox="0 0 300 520" aria-label="Figura del manipulador con dotación completa"></svg>
+          <div class="man-panel" id="manPanel" aria-live="polite"></div>
+        </div>
+      </article>
+
+      <article class="card wash-card rv" style="--d:100ms">
+        <p class="kicker">Lavado de manos</p>
+        <h3 class="card-title">40 segundos</h3>
+        <div class="wash">
+          <div class="ring">
+            <svg viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="70" class="ring-bg"/>
+              <circle cx="80" cy="80" r="70" class="ring-fg" id="washRing"/>
+            </svg>
+            <span class="ring-time" id="washTime">40</span>
+          </div>
+          <ol class="wash-steps" id="washSteps"></ol>
+        </div>
+        <div class="row">
+          <button class="btn primary sm" id="washStart">Iniciar</button>
+          <button class="btn ghost sm" id="washReset">Reiniciar</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="drawer rv">
+      <button class="drawer-btn" aria-expanded="false"><span>Plan de capacitación · 10 horas al año</span><span class="drawer-ic" aria-hidden="true"></span></button>
+      <div class="drawer-body"><div class="drawer-inner">
+        <div class="tbl-wrap"><table class="tbl" id="tblCapacitacion"></table></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 06 · Saneamiento ===================== -->
+<section id="saneamiento" class="sec alt">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">06</span><span class="chip">Min 12–15</span><span class="chip norm">Art. 26</span></div>
+      <h2 class="sec-title">Plan de saneamiento</h2>
+      <p class="sec-sub">Cuatro programas escritos con procedimientos, registros y responsables.</p>
+    </header>
+
+    <div class="tabset rv" id="sanTabs">
+      <div class="tabs" role="tablist" aria-label="Programas de saneamiento">
+        <button role="tab" aria-selected="true" data-tab="limpieza"><span class="tab-n">1</span>Limpieza y desinfección</button>
+        <button role="tab" aria-selected="false" data-tab="residuos"><span class="tab-n">2</span>Residuos</button>
+        <button role="tab" aria-selected="false" data-tab="plagas"><span class="tab-n">3</span>Plagas</button>
+        <button role="tab" aria-selected="false" data-tab="agua"><span class="tab-n">4</span>Agua potable</button>
+        <span class="tab-ink" aria-hidden="true"></span>
+      </div>
+
+      <!-- Limpieza -->
+      <div class="tab-panel active" role="tabpanel" data-panel="limpieza">
+        <ol class="chain" aria-label="Procedimiento de limpieza y desinfección">
+          <li>Retirar residuos</li><li>Enjuagar</li><li>Lavar con detergente</li><li>Enjuagar</li><li class="hl">Desinfectar 10 min</li><li>Secar al aire</li>
+        </ol>
+        <p class="lead-sm">Hipoclorito en superficies con alimento, amonio cuaternario en pisos, rotados cada mes. Limpieza diaria al terminar la jornada y profunda semanal y mensual <span class="mono">(F04, F05)</span>.</p>
+
+        <div class="calc card">
+          <div class="calc-form">
+            <p class="kicker">Calculadora de diluciones</p>
+            <label class="field"><span>Uso</span><select id="cUso"></select></label>
+            <div class="field-row">
+              <label class="field"><span>ppm deseadas</span><input id="cPpm" type="text" inputmode="decimal" value="200"></label>
+              <label class="field"><span>Producto comercial (%)</span><input id="cPct" type="text" inputmode="decimal" value="5,25"></label>
+            </div>
+            <label class="field"><span>Litros a preparar</span><input id="cLit" type="text" inputmode="decimal" value="10"></label>
+            <p class="formula mono">mL = ppm × L × 1000 ÷ (% × 10 000)</p>
+          </div>
+          <div class="calc-vis">
+            <svg viewBox="0 0 160 200" class="flask" aria-hidden="true">
+              <defs>
+                <clipPath id="flaskClip"><path d="M62 18 h36 v52 l42 98 q6 16 -12 16 H32 q-18 0 -12 -16 l42 -98z"/></clipPath>
+              </defs>
+              <g clip-path="url(#flaskClip)">
+                <rect x="0" y="0" width="160" height="200" class="flask-bg"/>
+                <rect x="0" y="96" width="160" height="110" class="flask-liq" id="flaskLiq"/>
+                <path d="M0 96 Q20 90 40 96 T80 96 T120 96 T160 96 V104 H0Z" class="flask-liq wave" id="flaskWave"/>
+                <g class="bubbles">
+                  <circle cx="64" cy="170" r="3"/><circle cx="92" cy="160" r="2.2"/><circle cx="80" cy="178" r="2.6"/><circle cx="104" cy="172" r="1.8"/>
+                </g>
+              </g>
+              <path d="M62 18 h36 v52 l42 98 q6 16 -12 16 H32 q-18 0 -12 -16 l42 -98z" class="flask-glass"/>
+              <path d="M56 18 h48" class="flask-glass"/>
+              <path d="M70 84 l-30 72" class="flask-shine"/>
+            </svg>
+          </div>
+          <div class="calc-out" aria-live="polite">
+            <p class="kicker">Medir</p>
+            <p class="calc-big" id="cRes">38,1 mL</p>
+            <p class="calc-txt" id="cTxt"></p>
+          </div>
+        </div>
+
+        <div class="drawer">
+          <button class="drawer-btn" aria-expanded="false"><span>Calendario de limpieza</span><span class="drawer-ic" aria-hidden="true"></span></button>
+          <div class="drawer-body"><div class="drawer-inner">
+            <div class="tbl-wrap"><table class="tbl" id="tblCalendario"></table></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- Residuos -->
+      <div class="tab-panel" role="tabpanel" data-panel="residuos">
+        <p class="lead-sm">Código de colores de la <b>Res. 2184 de 2019</b>. Canecas con tapa de pedal, retiro diario por la salida de residuos <span class="mono">(F08)</span>.</p>
+        <div class="bins card" id="bins">
+          <div class="bins-top">
+            <div>
+              <p class="kicker">¿A qué caneca va? <span class="mono muted" id="binN">1/8</span></p>
+              <p class="bins-item" id="binItem"></p>
+            </div>
+            <div class="bins-score"><span class="muted small">Aciertos</span><span class="mono" id="binScore">0 / 0</span></div>
+          </div>
+          <div class="bins-row" id="binsRow"></div>
+          <div class="bins-fb" id="binFb" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Plagas -->
+      <div class="tab-panel" role="tabpanel" data-panel="plagas">
+        <div class="trio" id="plagasCards"></div>
+      </div>
+
+      <!-- Agua -->
+      <div class="tab-panel" role="tabpanel" data-panel="agua">
+        <p class="lead-sm">Tanque con tapa lavado cada 6 meses y lectura semanal de cloro y pH <span class="mono">(F09)</span>. Mueve los controles para simular una lectura.</p>
+        <div class="water card">
+          <div class="water-ctrl">
+            <label class="range">
+              <span class="range-top"><span>Cloro residual libre</span><b class="mono" id="wClV">1,0 mg/L</b></span>
+              <input type="range" id="wCl" min="0" max="3" step="0.1" value="1" style="--lo:10%;--hi:66.67%">
+              <span class="range-scale mono"><span>0</span><span>Rango 0,3 – 2,0</span><span>3,0</span></span>
+            </label>
+            <label class="range">
+              <span class="range-top"><span>pH</span><b class="mono" id="wPhV">7,2</b></span>
+              <input type="range" id="wPh" min="5" max="10" step="0.1" value="7.2" style="--lo:30%;--hi:80%">
+              <span class="range-scale mono"><span>5</span><span>Rango 6,5 – 9,0</span><span>10</span></span>
+            </label>
+            <p class="muted small">Rangos de la Res. 2115 de 2007.</p>
+          </div>
+          <div class="water-tube">
+            <svg viewBox="0 0 80 220" aria-hidden="true">
+              <defs><clipPath id="tubeClip"><path d="M22 14 h36 v164 a18 18 0 0 1 -36 0z"/></clipPath></defs>
+              <g clip-path="url(#tubeClip)">
+                <rect x="0" y="0" width="80" height="220" class="tube-bg"/>
+                <rect x="0" y="62" width="80" height="160" id="tubeLiq" class="tube-liq"/>
+              </g>
+              <path d="M22 14 h36 v164 a18 18 0 0 1 -36 0z" class="flask-glass"/>
+              <path d="M16 14 h48" class="flask-glass"/>
+              <path d="M30 70 v100" class="flask-shine"/>
+            </svg>
+            <span class="mono muted small">DPD</span>
+          </div>
+          <div class="water-out">
+            <div class="chips-col">
+              <span class="chip" id="wClChip"></span>
+              <span class="chip" id="wPhChip"></span>
+            </div>
+            <p class="water-msg" id="wMsg" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 07 · Microbiología ===================== -->
+<section id="micro" class="sec">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">07</span><span class="chip">Min 15–17</span><span class="chip norm">Cap. V</span></div>
+      <h2 class="sec-title">Análisis microbiológico</h2>
+      <p class="sec-sub">Laboratorio externo acreditado por el ONAC (NTC-ISO/IEC 17025) o autorizado por el INVIMA.</p>
+    </header>
+    <p class="lead rv">ADEX no tiene laboratorio propio: en la planta solo se toman las muestras con técnica aséptica y se envían refrigeradas con cadena de custodia. Los resultados se comparan con la normativa vigente y, si alguno no cumple, se retira el lote, se corrige la causa y se repite el muestreo <span class="mono">(F13)</span>.</p>
+
+    <div class="samples rv" id="samples" role="tablist" aria-label="Tipos de muestra"></div>
+    <article class="sample-card card rv" id="sampleCard" aria-live="polite"></article>
+
+    <div class="drawer rv">
+      <button class="drawer-btn" aria-expanded="false"><span>Controles en planta</span><span class="drawer-ic" aria-hidden="true"></span></button>
+      <div class="drawer-body"><div class="drawer-inner"><p id="controlesPlanta"></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 08 · Etiqueta y transporte ===================== -->
+<section id="salida" class="sec alt">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">08</span><span class="chip">Min 17–19</span><span class="chip norm">Res. 5109 de 2005 · Arts. 28 y 29</span></div>
+      <h2 class="sec-title">Etiqueta y transporte</h2>
+      <p class="sec-sub">Rotulado según la Res. 5109 de 2005; almacenamiento y transporte según los Arts. 28 y 29.</p>
+    </header>
+
+    <div class="grid-2 out-grid">
+      <article class="card label-card rv">
+        <p class="kicker">Generador de etiqueta</p>
+        <div class="label-form">
+          <label class="field"><span>Elaboración</span><input type="date" id="lFecha"></label>
+          <label class="field"><span>Presentación</span>
+            <select id="lPres"><option value="entero">Entero de 1 lb</option><option value="porcion">Porción</option></select>
+          </label>
+          <label class="field"><span>Lote n.º</span><input type="number" id="lNum" min="1" max="99" value="1"></label>
+        </div>
+        <div class="label-stage"><div class="label" id="label"></div></div>
+      </article>
+
+      <article class="card van-card rv" style="--d:100ms">
+        <p class="kicker">Inspección del vehículo antes del despacho</p>
+        <div class="van-scene" id="vanScene">
+          <svg viewBox="0 0 380 170" class="van" id="van" aria-hidden="true">
+            <ellipse cx="190" cy="150" rx="150" ry="7" class="van-shadow"/>
+            <path d="M24 46 Q24 30 40 30 H236 Q246 30 246 40 V128 H24 Z" class="van-body"/>
+            <path d="M246 56 H300 Q312 56 320 66 L346 98 Q352 105 352 114 V128 H246 Z" class="van-body"/>
+            <path d="M258 66 H298 Q306 66 311 72 L330 98 H258 Z" class="van-glass"/>
+            <rect x="24" y="112" width="328" height="16" rx="4" class="van-skirt"/>
+            <text x="135" y="74" text-anchor="middle" class="van-t1">ADEX</text>
+            <text x="135" y="94" text-anchor="middle" class="van-t2">TRANSPORTE DE ALIMENTOS</text>
+            <rect x="340" y="104" width="10" height="7" rx="2" class="van-light"/>
+            <g class="wheel" style="transform-origin:86px 130px"><circle cx="86" cy="130" r="20" class="tire"/><circle cx="86" cy="130" r="8" class="hub"/><path d="M86 112 V148 M68 130 H104" class="spoke"/></g>
+            <g class="wheel" style="transform-origin:290px 130px"><circle cx="290" cy="130" r="20" class="tire"/><circle cx="290" cy="130" r="8" class="hub"/><path d="M290 112 V148 M272 130 H308" class="spoke"/></g>
+          </svg>
+          <div class="road" aria-hidden="true"></div>
+        </div>
+        <p class="muted small">El despacho solo se aprueba cuando se cumplen todos los puntos.</p>
+        <ul class="checks" id="vanChecks"></ul>
+        <div class="van-foot">
+          <span class="chip" id="vanMsg">Faltan 7 puntos</span>
+          <button class="btn primary sm" id="vanGo" disabled>Aprobar despacho</button>
+        </div>
+        <p class="van-done" id="vanDone" aria-live="polite"></p>
+      </article>
+    </div>
+
+    <div class="drawer rv">
+      <button class="drawer-btn" aria-expanded="false"><span>Transporte del ponqué</span><span class="drawer-ic" aria-hidden="true"></span></button>
+      <div class="drawer-body"><div class="drawer-inner"><p id="transporteTxt"></p></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee alt-mq" aria-hidden="true" data-words="Prevenir|Controlar|Verificar|Laboratorio|Trazabilidad|Saneamiento|Personal sano y capacitado"></div>
+
+<!-- ===================== 09 · Cierre ===================== -->
+<section id="cierre" class="sec">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">09</span><span class="chip">Min 19–20</span></div>
+      <h2 class="sec-title">En resumen</h2>
+    </header>
+    <div class="trio summary" id="summary"></div>
+    <div class="cierre-cta rv">
+      <button class="btn primary" id="btnFormats">
+        <svg viewBox="0 0 24 24" class="ic"><path class="stroke" d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20zM14 3.5v4h4M9.5 12h6M9.5 15.5h6"/></svg>
+        Ver los 14 formatos de registro
+      </button>
+      <p class="muted">El plan completo, con criterios de recepción, capacitación, calendario de limpieza, cronograma y lista de verificación, está en el documento subido a la plataforma.</p>
+    </div>
+    <div class="thanks rv">
+      <p class="thanks-big">Gracias<span>.</span></p>
+      <a href="#anexos" class="btn ghost" id="toQuestions">¿Preguntas? <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Anexos ===================== -->
+<section id="anexos" class="sec alt">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <div class="sec-meta"><span class="sec-num">+</span><span class="chip">Material de apoyo</span></div>
+      <h2 class="sec-title">Para profundizar</h2>
+      <p class="sec-sub">Cronograma de implementación, lista de verificación y preguntas frecuentes.</p>
+    </header>
+
+    <div class="tabset rv" id="anxTabs">
+      <div class="tabs" role="tablist" aria-label="Material de apoyo">
+        <button role="tab" aria-selected="true" data-tab="preguntas">Preguntas</button>
+        <button role="tab" aria-selected="false" data-tab="checklist">Lista de verificación</button>
+        <button role="tab" aria-selected="false" data-tab="gantt">Cronograma</button>
+        <span class="tab-ink" aria-hidden="true"></span>
+      </div>
+
+      <div class="tab-panel active" role="tabpanel" data-panel="preguntas">
+        <div class="flips" id="flips"></div>
+      </div>
+
+      <div class="tab-panel" role="tabpanel" data-panel="checklist">
+        <div class="card check-card">
+          <div class="check-head">
+            <div>
+              <p class="kicker">Cumplimiento</p>
+              <p class="check-pct"><span id="ckPct">0</span><small>%</small></p>
+            </div>
+            <button class="btn ghost sm" id="ckReset">Reiniciar</button>
+          </div>
+          <div class="meter"><div class="meter-fill" id="ckBar"></div><span class="meter-goal" title="Meta 90 %"><i>Meta 90 %</i></span></div>
+          <div id="ckList"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" role="tabpanel" data-panel="gantt">
+        <div class="card gantt-card">
+          <p class="kicker">Cronograma de implementación · 8 semanas</p>
+          <div class="gantt" id="gantt"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="kicker">Referencias</p>
+    <p class="foot-refs" id="refs"></p>
+    <p class="foot-keys mono">Atajos: <kbd>1</kbd>–<kbd>9</kbd> secciones · <kbd>0</kbd> portada · <kbd>T</kbd> cronómetro · <kbd>←</kbd><kbd>→</kbd> etapas del proceso · <kbd>M</kbd> sonido · <kbd>D</kbd> tema</p>
+  </div>
+</footer>
+
+<!-- Cronómetro de exposición -->
+<button class="timer" id="timer" aria-live="polite" title="Cronómetro de exposición (T)">
+  <svg class="timer-ring" viewBox="0 0 36 36" aria-hidden="true">
+    <circle cx="18" cy="18" r="15" class="tr-bg"/>
+    <circle cx="18" cy="18" r="15" class="tr-fg" id="timerRing"/>
+  </svg>
+  <span class="timer-main">
+    <span class="timer-time" id="timerTime">Iniciar 20:00</span>
+    <span class="timer-now" id="timerNow"></span>
+  </span>
+</button>
+
+<!-- Ventana modal -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <header class="modal-head">
+      <div>
+        <p class="kicker" id="modalKicker"></p>
+        <h3 class="modal-title" id="modalTitle"></h3>
+      </div>
+      <button class="icon-btn" data-close aria-label="Cerrar"><svg viewBox="0 0 24 24"><path class="stroke" d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </header>
+    <div class="modal-body" id="modalBody"></div>
+    <footer class="modal-foot" id="modalFoot"><button class="btn ghost sm" data-close>Cerrar</button></footer>
+  </div>
+</div>
+
+<script src="datos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
