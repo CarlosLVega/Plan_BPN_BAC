@@ -10,12 +10,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Great+Vibes&family=Josefin+Sans:wght@300;400;600&family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="haccp.css">
   <script>
     (function () {
       var t; try { t = localStorage.getItem('adex-tema'); } catch (e) {}
       if (!t) t = 'light';
       document.documentElement.setAttribute('data-theme', t);
       document.documentElement.classList.add('js');
+      // Panel inicial: BPM (izquierda) o HACCP (derecha) si el enlace lo pide
+      var h = location.hash;
+      document.documentElement.setAttribute('data-panel', (h === '#haccp' || h.indexOf('#h-') === 0) ? 'haccp' : 'bpm');
     })();
   </script>
 </head>
@@ -29,7 +33,13 @@
     <img class="brand-logo" src="logo.webp" alt="" width="40" height="40">
     <span class="brand-name">ADEX <span>sweet and pink</span></span>
   </a>
-  <nav class="nav-links" id="navLinks" aria-label="Secciones">
+  <div class="deck-switch" id="deckSwitch" role="tablist" aria-label="Plan que estás viendo">
+    <span class="ds-ink" aria-hidden="true"></span>
+    <button role="tab" id="dsBPM" aria-controls="pBPM" aria-selected="true" data-go="0" data-quiet><span class="ds-n">01</span>BPM</button>
+    <button role="tab" id="dsHACCP" aria-controls="pHACCP" aria-selected="false" data-go="1" data-quiet><span class="ds-n">02</span>HACCP</button>
+  </div>
+  <div class="nav-links-box">
+  <nav class="nav-links" id="navLinks" aria-label="Secciones del plan BPM">
     <a href="#empresa">Empresa</a>
     <a href="#plano">Plano</a>
     <a href="#proceso">Proceso</a>
@@ -41,6 +51,8 @@
     <a href="#cierre">Cierre</a>
     <a href="#anexos">Anexos</a>
   </nav>
+  <nav class="nav-links nl-h" id="navLinksH" aria-label="Secciones del plan HACCP"></nav>
+  </div>
   <div class="nav-tools">
     <button class="icon-btn" id="btnSound" aria-label="Silenciar sonidos" title="Sonido (M)">
       <svg viewBox="0 0 24 24" class="ic-on"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" class="stroke"/></svg>
@@ -52,6 +64,10 @@
     </button>
   </div>
 </header>
+
+<!-- ===================== Dos paneles: BPM (izquierda) · HACCP (derecha) ===================== -->
+<div class="deck" id="deck">
+<div class="panel" id="pBPM" data-plan="bpm" role="tabpanel" aria-labelledby="dsBPM" tabindex="-1">
 
 <main>
 
@@ -595,6 +611,18 @@
   </div>
 </footer>
 
+</div><!-- /panel BPM -->
+
+<div class="panel" id="pHACCP" data-plan="haccp" role="tabpanel" aria-labelledby="dsHACCP" tabindex="-1">
+  <div id="haccpRoot"></div>
+</div><!-- /panel HACCP -->
+</div><!-- /deck -->
+
+<!-- Pestañas laterales para cambiar de plan (escritorio) -->
+<button class="edge edge-r" id="edgeR" data-go="1" data-quiet aria-label="Ir al plan HACCP"><span class="edge-t">HACCP</span><span class="edge-a" aria-hidden="true">›</span></button>
+<button class="edge edge-l" id="edgeL" data-go="0" data-quiet aria-label="Volver al plan BPM"><span class="edge-a" aria-hidden="true">‹</span><span class="edge-t">BPM</span></button>
+<div class="swipe-hint" id="swipeHint" hidden><span class="sh-hand" aria-hidden="true">👆</span><span>Desliza a la izquierda para ver el <b>Plan HACCP</b></span></div>
+
 <!-- Cronómetro de exposición -->
 <button class="timer" id="timer" aria-live="polite" title="Cronómetro de exposición (T)">
   <svg class="timer-ring" viewBox="0 0 36 36" aria-hidden="true">
@@ -604,6 +632,18 @@
   <span class="timer-main">
     <span class="timer-time" id="timerTime">Iniciar 20:00</span>
     <span class="timer-now" id="timerNow"></span>
+  </span>
+</button>
+
+<!-- Cronómetro de exposición del plan HACCP -->
+<button class="timer timer-h" id="timerH" aria-live="polite" title="Cronómetro de exposición HACCP (T)">
+  <svg class="timer-ring" viewBox="0 0 36 36" aria-hidden="true">
+    <circle cx="18" cy="18" r="15" class="tr-bg"/>
+    <circle cx="18" cy="18" r="15" class="tr-fg" id="timerRingH"/>
+  </svg>
+  <span class="timer-main">
+    <span class="timer-time" id="timerTimeH">Iniciar 20:00</span>
+    <span class="timer-now" id="timerNowH"></span>
   </span>
 </button>
 
@@ -624,6 +664,8 @@
 </div>
 
 <script src="datos.js"></script>
+<script src="datos-haccp.js"></script>
+<script src="haccp.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

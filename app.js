@@ -1788,6 +1788,7 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.target.closest('input, select, textarea, [contenteditable]')) return;
       if (Modal.isOpen) return;
+      if (root.dataset.panel === 'haccp') return; // en el panel HACCP los atajos los maneja haccp.js
       const k = e.key;
       if (/^[1-9]$/.test(k)) { goTo(C.agenda[+k - 1].id); return; }
       if (k === '0') { goTo('inicio'); return; }
@@ -1834,4 +1835,8 @@
   initNav();
   initFx();
   splash(initReveal);
+
+  // Herramientas compartidas con el panel HACCP (haccp.js)
+  window.ADEX = { Sound, Modal, burst, pop, icon, initTabs, countUp, shuffle, barcode, toggleTheme, Timer, reduce, store };
+  document.dispatchEvent(new Event('adex:ready'));
 })();
