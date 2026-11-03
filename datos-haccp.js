@@ -22,7 +22,7 @@ window.HCFG = {
   ],
 
   /* ---------- Portada ---------- */
-  integrantes: ['Adarut Vilamizar'],
+  integrantes: ['Adarut Villamizar', 'Erika Bolívar', 'María Flores', 'Ximena Ramírez'],
   indicadores: [
     { n: 12, sufijo: '', texto: 'pasos del Codex Alimentarius' },
     { n: 7,  sufijo: '', texto: 'principios del sistema HACCP' },
